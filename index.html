@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rekod Aset Sekolah</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-dark: #1344b0;
+    --primary-light: #e8efff;
+    --accent: #f59e0b;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --bg: #f0f4ff;
+    --surface: #ffffff;
+    --surface2: #f8faff;
+    --border: #dde5f4;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --shadow: 0 4px 24px rgba(26,86,219,0.10);
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(135deg, #1a56db 0%, #1e3a8a 100%);
+    color: white;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    box-shadow: 0 2px 16px rgba(26,86,219,0.25);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-logo {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+
+  header h1 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  header p {
+    font-size: 11px;
+    opacity: 0.75;
+    margin-top: 1px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    border-radius: 9px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: all 0.18s;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+  .btn-white {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  .btn-white:hover { background: rgba(255,255,255,0.25); }
+
+  .btn-outline {
+    background: white;
+    color: var(--primary);
+    border: 1.5px solid var(--border);
+  }
+
+  .btn-outline:hover { border-color: var(--primary); background: var(--primary-light); }
+
+  .btn-danger {
+    background: #fef2f2;
+    color: var(--danger);
+    border: 1.5px solid #fecaca;
+  }
+
+  .btn-danger:hover { background: #fee2e2; }
+
+  .btn-success {
+    background: var(--success);
+    color: white;
+  }
+
+  .btn-success:hover { background: #059669; transform: translateY(-1px); }
+
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+  /* ─── LAYOUT ─── */
+  .app-layout {
+    display: flex;
+    min-height: calc(100vh - 64px);
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: 220px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 10px 4px;
+    margin-top: 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+
+  .nav-icon { font-size: 17px; width: 22px; text-align: center; }
+
+  .badge {
+    margin-left: auto;
+    background: var(--primary);
+    color: white;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* ─── MAIN ─── */
+  .main {
+    flex: 1;
+    padding: 28px 32px;
+    overflow-x: hidden;
+  }
+
+  /* ─── VIEWS ─── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ─── DASHBOARD ─── */
+  .page-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .page-sub {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    margin-bottom: 24px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 0 14px 0 80px;
+    opacity: 0.08;
+  }
+
+  .stat-card.blue::before { background: var(--primary); }
+  .stat-card.amber::before { background: var(--accent); }
+  .stat-card.green::before { background: var(--success); }
+  .stat-card.red::before { background: var(--danger); }
+
+  .stat-icon {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -1px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .stat-label {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* ─── TABLE SECTION ─── */
+  .section-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .section-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    padding: 7px 12px;
+    transition: border 0.15s;
+  }
+
+  .search-box:focus-within { border-color: var(--primary); }
+
+  .search-box input {
+    background: none;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    width: 190px;
+  }
+
+  select.filter-select {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    padding: 7px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+
+  select.filter-select:focus { border-color: var(--primary); }
+
+  /* ─── TABLE ─── */
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  thead th {
+    background: var(--surface2);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
+    cursor: pointer;
+  }
+
+  tbody tr:hover { background: var(--primary-light); }
+  tbody tr:last-child { border-bottom: none; }
+
+  td {
+    padding: 13px 16px;
+    vertical-align: middle;
+  }
+
+  .td-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: 500;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .status-baik { background: #d1fae5; color: #065f46; }
+  .status-rosak { background: #fee2e2; color: #991b1b; }
+  .status-baik-pulih { background: #fef3c7; color: #92400e; }
+  .status-lupus { background: #f3f4f6; color: #374151; }
+
+  .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .dot-baik { background: #10b981; }
+  .dot-rosak { background: #ef4444; }
+  .dot-baik-pulih { background: #f59e0b; }
+  .dot-lupus { background: #9ca3af; }
+
+  .action-group { display: flex; gap: 6px; }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.55);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: white;
+    border-radius: 18px;
+    width: 100%;
+    max-width: 620px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(26,86,219,0.25);
+    animation: modalIn 0.22s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.93) translateY(16px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    padding: 22px 26px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .modal-close {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: white;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    transition: all 0.15s;
+  }
+
+  .modal-close:hover { background: #fee2e2; border-color: #fca5a5; color: var(--danger); }
+
+  .modal-body { padding: 22px 26px; }
+
+  .modal-footer {
+    padding: 16px 26px 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* ─── FORM ─── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  label span { color: var(--danger); }
+
+  input[type=text],
+  input[type=number],
+  input[type=date],
+  input[type=email],
+  textarea,
+  select.form-select {
+    width: 100%;
+    padding: 10px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--text);
+    background: var(--surface2);
+    outline: none;
+    transition: border 0.15s, background 0.15s;
+  }
+
+  input:focus, textarea:focus, select.form-select:focus {
+    border-color: var(--primary);
+    background: white;
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  /* ─── DETAIL MODAL ─── */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .detail-item label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+    display: block;
+  }
+
+  .detail-item .val {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ─── TOAST ─── */
+  .toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .toast {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    border-left: 4px solid var(--success);
+    font-size: 13.5px;
+    font-weight: 600;
+    animation: toastIn 0.25s ease;
+    min-width: 260px;
+  }
+
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .toast.error { border-color: var(--danger); }
+
+  /* ─── CHART ─── */
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 100px;
+    padding-top: 10px;
+  }
+
+  .bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .bar {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    transition: height 0.5s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  .bar-label { font-size: 10px; color: var(--text-muted); font-weight: 600; }
+  .bar-val { font-size: 11px; font-weight: 700; color: var(--text); }
+
+  /* ─── DASHBOARD BOTTOM ─── */
+  .dash-bottom {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+  }
+
+  .category-list { padding: 10px 0; }
+
+  .cat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cat-item:last-child { border: none; }
+
+  .cat-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cat-name { flex: 1; font-size: 13.5px; font-weight: 500; }
+  .cat-count { font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+  /* ─── EXPORT ─── */
+  .export-panel {
+    padding: 22px 26px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+
+  .export-card {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .export-card:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+
+  .export-card .icon { font-size: 32px; margin-bottom: 10px; }
+  .export-card .title { font-size: 13.5px; font-weight: 700; margin-bottom: 4px; }
+  .export-card .desc { font-size: 11.5px; color: var(--text-muted); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .dash-bottom { grid-template-columns: 1fr; }
+    .main { padding: 20px 16px; }
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .detail-grid { grid-template-columns: 1fr; }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-muted);
+  }
+
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  .github-note {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    color: white;
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .github-note .icon { font-size: 28px; flex-shrink: 0; }
+  .github-note h3 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .github-note p { font-size: 12px; opacity: 0.75; }
+  .github-note code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.15);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="header-logo">🏫</div>
+    <div>
+      <h1>Sistem Pengurusan Aset Sekolah</h1>
+      <p>Rekod & Pantau Semua Aset Sekolah Anda</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-white btn-sm" onclick="showView('eksport')">⬇ Eksport</button>
+    <button class="btn btn-white btn-sm" onclick="showGithubInfo()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      GitHub
+    </button>
+    <button class="btn btn-white btn-sm" onclick="openModal('modal-tambah')">+ Tambah Aset</button>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-label">Menu Utama</div>
+    <button class="nav-item active" onclick="showView('dashboard', this)">
+      <span class="nav-icon">📊</span> Papan Pemuka
+    </button>
+    <button class="nav-item" onclick="showView('senarai', this)">
+      <span class="nav-icon">📋</span> Senarai Aset
+      <span class="badge" id="badge-count">0</span>
+    </button>
+    <button class="nav-item" onclick="showView('laporan', this)">
+      <span class="nav-icon">📈</span> Laporan
+    </button>
+    <button class="nav-item" onclick="showView('eksport', this)">
+      <span class="nav-icon">📤</span> Eksport / Simpan
+    </button>
+
+    <div class="sidebar-label">Tetapan</div>
+    <button class="nav-item" onclick="showView('tentang', this)">
+      <span class="nav-icon">⚙️</span> Tentang Sistem
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <div class="view active" id="view-dashboard">
+      <div class="page-title">📊 Papan Pemuka</div>
+      <div class="page-sub">Ringkasan keseluruhan status aset sekolah</div>
+
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-icon">🗂️</div>
+          <div class="stat-value" id="stat-total">0</div>
+          <div class="stat-label">Jumlah Aset Berdaftar</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value" id="stat-baik">0</div>
+          <div class="stat-label">Aset Dalam Keadaan Baik</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-icon">🔧</div>
+          <div class="stat-value" id="stat-baik-pulih">0</div>
+          <div class="stat-label">Perlu Diselenggara</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-value" id="stat-rosak">0</div>
+          <div class="stat-label">Rosak / Hilang</div>
+        </div>
+      </div>
+
+      <div class="dash-bottom">
+        <div class="section-card">
+          <div class="section-header">
+            <span class="section-title">📦 Aset Terkini Ditambah</span>
+          </div>
+          <div id="dash-recent-list">
+            <div class="empty-state"><div class="icon">📭</div><p>Tiada aset lagi. Tambah aset pertama anda!</p></div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-header">
+            <span class="section-title">🏷️ Mengikut Kategori</span>
+          </div>
+          <div class="category-list" id="dash-cat-list">
+            <div class="empty-state"><div class="icon">📂</div><p>Tiada kategori</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SENARAI ═══ -->
+    <div class="view" id="view-senarai">
+      <div class="page-title">📋 Senarai Aset</div>
+      <div class="page-sub">Semua rekod aset sekolah yang berdaftar</div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title" id="table-count-label">0 rekod dijumpai</span>
+          <div class="section-controls">
+            <div class="search-box">
+              🔍 <input type="text" id="search-input" placeholder="Cari nama / no. aset..." oninput="filterTable()">
+            </div>
+            <select class="filter-select" id="filter-kategori" onchange="filterTable()">
+              <option value="">Semua Kategori</option>
+            </select>
+            <select class="filter-select" id="filter-status" onchange="filterTable()">
+              <option value="">Semua Status</option>
+              <option value="Baik">Baik</option>
+              <option value="Baik Pulih">Baik Pulih</option>
+              <option value="Rosak">Rosak</option>
+              <option value="Dilupuskan">Dilupuskan</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-tambah')">+ Tambah</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>No. Aset</th>
+                <th>Nama Aset</th>
+                <th>Kategori</th>
+                <th>Lokasi</th>
+                <th>Status</th>
+                <th>Tarikh Perolehan</th>
+                <th>Nilai (RM)</th>
+                <th>Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="asset-tbody"></tbody>
+          </table>
+          <div id="empty-table" class="empty-state" style="display:none">
+            <div class="icon">📭</div>
+            <p>Tiada aset dijumpai. Cuba ubah carian atau tambah aset baru.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ LAPORAN ═══ -->
+    <div class="view" id="view-laporan">
+      <div class="page-title">📈 Laporan Aset</div>
+      <div class="page-sub">Analisis dan statistik aset sekolah</div>
+
+      <div class="section-card" style="margin-bottom:20px">
+        <div class="section-header"><span class="section-title">📊 Taburan Status Aset</span></div>
+        <div style="padding: 24px 22px;">
+          <div class="chart-bars" id="chart-status"></div>
+          <div style="display:flex; gap:16px; margin-top:14px; flex-wrap:wrap;">
+            <span style="font-size:12px;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#10b981;display:inline-block"></span> Baik</span>
+            <span style="font-size:12px;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#f59e0b;display:inline-block"></span> Baik Pulih</span>
+            <span style="font-size:12px;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#ef4444;display:inline-block"></span> Rosak</span>
+            <span style="font-size:12px;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#9ca3af;display:inline-block"></span> Dilupuskan</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="section-card">
+          <div class="section-header"><span class="section-title">📦 Aset Mengikut Kategori</span></div>
+          <div id="report-kategori" style="padding:8px 0"></div>
+        </div>
+        <div class="section-card">
+          <div class="section-header"><span class="section-title">🏢 Aset Mengikut Lokasi</span></div>
+          <div id="report-lokasi" style="padding:8px 0"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ EKSPORT ═══ -->
+    <div class="view" id="view-eksport">
+      <div class="page-title">📤 Eksport & Simpan ke GitHub</div>
+      <div class="page-sub">Simpan data aset anda dalam pelbagai format atau ke GitHub</div>
+
+      <div class="github-note">
+        <span class="icon">🐙</span>
+        <div>
+          <h3>Cara Simpan ke GitHub</h3>
+          <p>Muat turun fail <code>assets.json</code>, kemudian commit ke repo GitHub anda di <code>data/assets.json</code>. Aplikasi ini juga boleh dihost sebagai GitHub Pages sepenuhnya percuma.</p>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header"><span class="section-title">Pilih Format Eksport</span></div>
+        <div class="export-panel">
+          <div class="export-card" onclick="exportJSON()">
+            <div class="icon">📄</div>
+            <div class="title">JSON</div>
+            <div class="desc">Untuk simpan ke GitHub atau import semula</div>
+          </div>
+          <div class="export-card" onclick="exportCSV()">
+            <div class="icon">📊</div>
+            <div class="title">CSV</div>
+            <div class="desc">Buka dengan Excel atau Google Sheets</div>
+          </div>
+          <div class="export-card" onclick="exportHTML()">
+            <div class="icon">🖨️</div>
+            <div class="title">Cetak / PDF</div>
+            <div class="desc">Cetak atau simpan sebagai PDF</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header"><span class="section-title">📥 Import dari JSON</span></div>
+        <div style="padding:22px 26px">
+          <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:14px">Import semula data dari fail JSON yang disimpan sebelum ini atau dari GitHub.</p>
+          <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
+          <button class="btn btn-outline" onclick="document.getElementById('import-file').click()">📁 Pilih Fail JSON untuk Import</button>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header"><span class="section-title">🐙 Panduan GitHub Pages</span></div>
+        <div style="padding:22px 26px">
+          <ol style="font-size:13.5px;line-height:2;color:var(--text-muted);padding-left:20px">
+            <li>Muat turun semua fail aplikasi ini (index.html)</li>
+            <li>Buat repositori baru di <strong>github.com</strong></li>
+            <li>Upload fail <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-family:monospace">index.html</code> ke repositori</li>
+            <li>Pergi ke <strong>Settings → Pages</strong> → pilih branch <em>main</em></li>
+            <li>Klik <strong>Save</strong> — URL GitHub Pages anda akan dipaparkan</li>
+            <li>Eksport data sebagai JSON dan simpan di repositori sebagai <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-family:monospace">data/assets.json</code></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TENTANG ═══ -->
+    <div class="view" id="view-tentang">
+      <div class="page-title">⚙️ Tentang Sistem</div>
+      <div class="page-sub">Maklumat sistem pengurusan aset sekolah</div>
+      <div class="section-card">
+        <div style="padding:28px;text-align:center">
+          <div style="font-size:56px;margin-bottom:16px">🏫</div>
+          <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">Sistem Pengurusan Aset Sekolah</h2>
+          <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Versi 1.0 • Dibina sebagai Progressive Web App</p>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+            <div style="background:var(--primary-light);padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;color:var(--primary)">🌐 Berjalan tanpa Internet</div>
+            <div style="background:#d1fae5;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;color:#065f46">💾 Data disimpan di browser</div>
+            <div style="background:#fef3c7;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;color:#92400e">🐙 Serasi dengan GitHub Pages</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══ MODAL TAMBAH/EDIT ASET ═══ -->
+<div class="modal-overlay" id="modal-tambah">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-tambah-title">➕ Tambah Aset Baru</span>
+      <button class="modal-close" onclick="closeModal('modal-tambah')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>No. Aset <span>*</span></label>
+          <input type="text" id="f-id" placeholder="cth: A-2024-001">
+        </div>
+        <div class="form-group">
+          <label>Nama Aset <span>*</span></label>
+          <input type="text" id="f-nama" placeholder="cth: Komputer Riba Dell">
+        </div>
+        <div class="form-group">
+          <label>Kategori <span>*</span></label>
+          <select class="form-select" id="f-kategori">
+            <option value="">-- Pilih Kategori --</option>
+            <option>Perabot</option>
+            <option>Peralatan ICT</option>
+            <option>Peralatan Sukan</option>
+            <option>Peralatan Makmal</option>
+            <option>Buku & Bahan Bacaan</option>
+            <option>Kenderaan</option>
+            <option>Peralatan Elektrik</option>
+            <option>Alat Tulis & Pejabat</option>
+            <option>Lain-lain</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Lokasi / Bilik</label>
+          <input type="text" id="f-lokasi" placeholder="cth: Bilik Komputer 1">
+        </div>
+        <div class="form-group">
+          <label>Status Keadaan <span>*</span></label>
+          <select class="form-select" id="f-status">
+            <option value="">-- Pilih Status --</option>
+            <option>Baik</option>
+            <option>Baik Pulih</option>
+            <option>Rosak</option>
+            <option>Dilupuskan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tarikh Perolehan</label>
+          <input type="date" id="f-tarikh">
+        </div>
+        <div class="form-group">
+          <label>Nilai Aset (RM)</label>
+          <input type="number" id="f-nilai" placeholder="0.00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Pembekal / Syarikat</label>
+          <input type="text" id="f-pembekal" placeholder="cth: Syarikat ABC Sdn Bhd">
+        </div>
+        <div class="form-group">
+          <label>No. Siri / Model</label>
+          <input type="text" id="f-siri" placeholder="cth: SN12345678">
+        </div>
+        <div class="form-group">
+          <label>Pengguna Bertanggungjawab</label>
+          <input type="text" id="f-pengguna" placeholder="cth: En. Ahmad bin Ali">
+        </div>
+        <div class="form-group full">
+          <label>Catatan / Keterangan</label>
+          <textarea id="f-catatan" placeholder="Tambah sebarang maklumat tambahan di sini..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-tambah')">Batal</button>
+      <button class="btn btn-success" onclick="saveAset()">💾 Simpan Aset</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL DETAIL ═══ -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">🔍 Butiran Aset</span>
+      <button class="modal-close" onclick="closeModal('modal-detail')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid" id="detail-content"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-detail')">Tutup</button>
+      <button class="btn btn-outline" id="detail-edit-btn">✏️ Edit</button>
+      <button class="btn btn-danger" id="detail-delete-btn">🗑️ Padam</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  DATA STORE
+// ═══════════════════════════════════════════════
+const STORE_KEY = 'sekolah_aset_v1';
+let assets = [];
+let editingId = null;
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    assets = raw ? JSON.parse(raw) : getDefaultData();
+    if (!raw) saveData();
+  } catch(e) { assets = getDefaultData(); }
+}
+
+function saveData() {
+  localStorage.setItem(STORE_KEY, JSON.stringify(assets));
+}
+
+function getDefaultData() {
+  return [
+    { id:'A-2024-001', nama:'Komputer Riba Dell Latitude', kategori:'Peralatan ICT', lokasi:'Bilik Komputer 1', status:'Baik', tarikh:'2024-01-15', nilai:3200, pembekal:'ICT Solutions Sdn Bhd', siri:'SN-DL-00123', pengguna:'Cik Nurul Ain', catatan:'Unit dalam keadaan sempurna' },
+    { id:'A-2024-002', nama:'Meja Pelajar (Set 30 unit)', kategori:'Perabot', lokasi:'Bilik Darjah 4A', status:'Baik', tarikh:'2023-08-20', nilai:4500, pembekal:'Perabot Bestari', siri:'-', pengguna:'En. Razali', catatan:'' },
+    { id:'A-2024-003', nama:'Projektor Epson EB-W51', kategori:'Peralatan ICT', lokasi:'Bilik Tayangan', status:'Baik Pulih', tarikh:'2022-03-10', nilai:2800, pembekal:'Tech World Sdn Bhd', siri:'EP-EB-W51-9921', pengguna:'Pn. Salmah', catatan:'Penggantian lampu perlu dilakukan' },
+    { id:'A-2024-004', nama:'Bola Jaring (10 biji)', kategori:'Peralatan Sukan', lokasi:'Stor Sukan', status:'Rosak', tarikh:'2021-06-01', nilai:300, pembekal:'Kedai Sukan Juara', siri:'-', pengguna:'En. Fairus', catatan:'Perlu diganti segera' },
+    { id:'A-2024-005', nama:'Kerusi Guru (Kayu Jati)', kategori:'Perabot', lokasi:'Bilik Guru', status:'Baik', tarikh:'2023-11-05', nilai:850, pembekal:'Perabot Bestari', siri:'-', pengguna:'Semua Guru', catatan:'' },
+  ];
+}
+
+// ═══════════════════════════════════════════════
+//  VIEWS
+// ═══════════════════════════════════════════════
+function showView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (name === 'dashboard') refreshDashboard();
+  if (name === 'senarai') renderTable(assets);
+  if (name === 'laporan') renderReports();
+}
+
+// ═══════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════
+function refreshDashboard() {
+  const total = assets.length;
+  const baik = assets.filter(a => a.status === 'Baik').length;
+  const baikPulih = assets.filter(a => a.status === 'Baik Pulih').length;
+  const rosak = assets.filter(a => a.status === 'Rosak').length;
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-baik').textContent = baik;
+  document.getElementById('stat-baik-pulih').textContent = baikPulih;
+  document.getElementById('stat-rosak').textContent = rosak;
+  document.getElementById('badge-count').textContent = total;
+
+  // Recent
+  const recentEl = document.getElementById('dash-recent-list');
+  if (assets.length === 0) {
+    recentEl.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Tiada aset lagi.</p></div>';
+  } else {
+    const recent = [...assets].reverse().slice(0, 5);
+    recentEl.innerHTML = recent.map(a => `
+      <div class="cat-item" onclick="openDetail('${a.id}')">
+        <span style="font-size:20px">${getCatIcon(a.kategori)}</span>
+        <span class="cat-name">${a.nama}</span>
+        <span class="status-badge status-${statusClass(a.status)}">${a.status}</span>
+      </div>
+    `).join('');
+  }
+
+  // Categories
+  const cats = {};
+  assets.forEach(a => { cats[a.kategori] = (cats[a.kategori] || 0) + 1; });
+  const catEl = document.getElementById('dash-cat-list');
+  const catColors = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#14b8a6','#f97316','#3b82f6'];
+  const entries = Object.entries(cats);
+  if (!entries.length) {
+    catEl.innerHTML = '<div class="empty-state"><div class="icon">📂</div><p>Tiada data</p></div>';
+  } else {
+    catEl.innerHTML = entries.map(([k,v], i) => `
+      <div class="cat-item">
+        <span class="cat-dot" style="background:${catColors[i % catColors.length]}"></span>
+        <span class="cat-name">${k}</span>
+        <span class="cat-count">${v}</span>
+      </div>
+    `).join('');
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  TABLE
+// ═══════════════════════════════════════════════
+function renderTable(list) {
+  const tbody = document.getElementById('asset-tbody');
+  const empty = document.getElementById('empty-table');
+  document.getElementById('table-count-label').textContent = `${list.length} rekod dijumpai`;
+
+  // Update kategori filter
+  const allKats = [...new Set(assets.map(a => a.kategori))];
+  const kFilter = document.getElementById('filter-kategori');
+  const curVal = kFilter.value;
+  kFilter.innerHTML = '<option value="">Semua Kategori</option>' + allKats.map(k => `<option ${k===curVal?'selected':''}>${k}</option>`).join('');
+
+  if (!list.length) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = list.map(a => `
+    <tr onclick="openDetail('${a.id}')">
+      <td class="td-mono">${a.id}</td>
+      <td><strong>${a.nama}</strong></td>
+      <td>${a.kategori}</td>
+      <td>${a.lokasi || '-'}</td>
+      <td><span class="status-badge status-${statusClass(a.status)}"><span class="dot dot-${statusClass(a.status)}"></span>${a.status}</span></td>
+      <td>${a.tarikh || '-'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:12.5px">${a.nilai ? 'RM ' + Number(a.nilai).toLocaleString('ms-MY',{minimumFractionDigits:2}) : '-'}</td>
+      <td onclick="event.stopPropagation()">
+        <div class="action-group">
+          <button class="btn btn-outline btn-sm" onclick="editAset('${a.id}')">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteAset('${a.id}')">🗑️</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterTable() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const kat = document.getElementById('filter-kategori').value;
+  const stat = document.getElementById('filter-status').value;
+  const filtered = assets.filter(a => {
+    const matchQ = !q || a.nama.toLowerCase().includes(q) || a.id.toLowerCase().includes(q);
+    const matchK = !kat || a.kategori === kat;
+    const matchS = !stat || a.status === stat;
+    return matchQ && matchK && matchS;
+  });
+  renderTable(filtered);
+}
+
+// ═══════════════════════════════════════════════
+//  DETAIL
+// ═══════════════════════════════════════════════
+function openDetail(id) {
+  const a = assets.find(x => x.id === id);
+  if (!a) return;
+  const fields = [
+    ['No. Aset', a.id], ['Nama Aset', a.nama], ['Kategori', a.kategori],
+    ['Lokasi', a.lokasi||'-'], ['Status', a.status], ['Tarikh Perolehan', a.tarikh||'-'],
+    ['Nilai (RM)', a.nilai ? 'RM '+Number(a.nilai).toLocaleString('ms-MY',{minimumFractionDigits:2}) : '-'],
+    ['Pembekal', a.pembekal||'-'], ['No. Siri / Model', a.siri||'-'],
+    ['Pengguna Bertanggungjawab', a.pengguna||'-'], ['Catatan', a.catatan||'-']
+  ];
+  document.getElementById('detail-content').innerHTML = fields.map(([l,v]) => `
+    <div class="detail-item">
+      <label>${l}</label>
+      <div class="val">${v}</div>
+    </div>
+  `).join('');
+  document.getElementById('detail-edit-btn').onclick = () => { closeModal('modal-detail'); editAset(id); };
+  document.getElementById('detail-delete-btn').onclick = () => { closeModal('modal-detail'); deleteAset(id); };
+  openModal('modal-detail');
+}
+
+// ═══════════════════════════════════════════════
+//  CRUD
+// ═══════════════════════════════════════════════
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  if (id === 'modal-tambah' && !editingId) resetForm();
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  if (id === 'modal-tambah') { editingId = null; }
+}
+
+function resetForm() {
+  ['f-id','f-nama','f-lokasi','f-nilai','f-pembekal','f-siri','f-pengguna','f-catatan','f-tarikh'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-kategori').value = '';
+  document.getElementById('f-status').value = '';
+  document.getElementById('modal-tambah-title').textContent = '➕ Tambah Aset Baru';
+}
+
+function editAset(id) {
+  const a = assets.find(x => x.id === id);
+  if (!a) return;
+  editingId = id;
+  document.getElementById('modal-tambah-title').textContent = '✏️ Edit Aset: ' + id;
+  document.getElementById('f-id').value = a.id;
+  document.getElementById('f-nama').value = a.nama;
+  document.getElementById('f-kategori').value = a.kategori;
+  document.getElementById('f-lokasi').value = a.lokasi || '';
+  document.getElementById('f-status').value = a.status;
+  document.getElementById('f-tarikh').value = a.tarikh || '';
+  document.getElementById('f-nilai').value = a.nilai || '';
+  document.getElementById('f-pembekal').value = a.pembekal || '';
+  document.getElementById('f-siri').value = a.siri || '';
+  document.getElementById('f-pengguna').value = a.pengguna || '';
+  document.getElementById('f-catatan').value = a.catatan || '';
+  openModal('modal-tambah');
+}
+
+function saveAset() {
+  const id = document.getElementById('f-id').value.trim();
+  const nama = document.getElementById('f-nama').value.trim();
+  const kategori = document.getElementById('f-kategori').value;
+  const status = document.getElementById('f-status').value;
+
+  if (!id || !nama || !kategori || !status) {
+    showToast('⚠️ Sila isi semua medan bertanda *', 'error');
+    return;
+  }
+
+  if (!editingId && assets.find(a => a.id === id)) {
+    showToast('⚠️ No. Aset "' + id + '" sudah wujud!', 'error');
+    return;
+  }
+
+  const aset = {
+    id, nama, kategori, status,
+    lokasi: document.getElementById('f-lokasi').value.trim(),
+    tarikh: document.getElementById('f-tarikh').value,
+    nilai: parseFloat(document.getElementById('f-nilai').value) || 0,
+    pembekal: document.getElementById('f-pembekal').value.trim(),
+    siri: document.getElementById('f-siri').value.trim(),
+    pengguna: document.getElementById('f-pengguna').value.trim(),
+    catatan: document.getElementById('f-catatan').value.trim(),
+  };
+
+  if (editingId) {
+    const idx = assets.findIndex(a => a.id === editingId);
+    assets[idx] = aset;
+    showToast('✅ Aset berjaya dikemaskini!');
+  } else {
+    assets.push(aset);
+    showToast('✅ Aset berjaya ditambah!');
+  }
+
+  saveData();
+  closeModal('modal-tambah');
+  renderTable(assets);
+  refreshDashboard();
+}
+
+function deleteAset(id) {
+  if (!confirm('Padam aset "' + id + '"? Tindakan ini tidak boleh dibatalkan.')) return;
+  assets = assets.filter(a => a.id !== id);
+  saveData();
+  renderTable(assets);
+  refreshDashboard();
+  showToast('🗑️ Aset berjaya dipadamkan!');
+}
+
+// ═══════════════════════════════════════════════
+//  REPORTS
+// ═══════════════════════════════════════════════
+function renderReports() {
+  const statusData = { 'Baik': 0, 'Baik Pulih': 0, 'Rosak': 0, 'Dilupuskan': 0 };
+  assets.forEach(a => { if (statusData[a.status] !== undefined) statusData[a.status]++; });
+  const colors = { 'Baik': '#10b981', 'Baik Pulih': '#f59e0b', 'Rosak': '#ef4444', 'Dilupuskan': '#9ca3af' };
+  const maxVal = Math.max(...Object.values(statusData), 1);
+
+  document.getElementById('chart-status').innerHTML = Object.entries(statusData).map(([k, v]) => `
+    <div class="bar-wrap">
+      <div class="bar-val">${v}</div>
+      <div class="bar" style="background:${colors[k]};height:${(v/maxVal)*80}px"></div>
+      <div class="bar-label">${k}</div>
+    </div>
+  `).join('');
+
+  // By kategori
+  const cats = {};
+  assets.forEach(a => { cats[a.kategori] = (cats[a.kategori] || 0) + 1; });
+  document.getElementById('report-kategori').innerHTML = Object.entries(cats).length
+    ? Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v]) => `
+        <div class="cat-item">
+          <span class="cat-name">${k}</span>
+          <span class="cat-count">${v} unit</span>
+        </div>
+      `).join('')
+    : '<div class="empty-state" style="padding:20px"><p>Tiada data</p></div>';
+
+  // By lokasi
+  const locs = {};
+  assets.forEach(a => { if(a.lokasi) locs[a.lokasi] = (locs[a.lokasi] || 0) + 1; });
+  document.getElementById('report-lokasi').innerHTML = Object.entries(locs).length
+    ? Object.entries(locs).sort((a,b)=>b[1]-a[1]).map(([k,v]) => `
+        <div class="cat-item">
+          <span class="cat-name">📍 ${k}</span>
+          <span class="cat-count">${v} unit</span>
+        </div>
+      `).join('')
+    : '<div class="empty-state" style="padding:20px"><p>Tiada data lokasi</p></div>';
+}
+
+// ═══════════════════════════════════════════════
+//  EXPORT / IMPORT
+// ═══════════════════════════════════════════════
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(assets, null, 2)], { type: 'application/json' });
+  dlBlob(blob, 'assets.json');
+  showToast('✅ Fail JSON berjaya dimuat turun!');
+}
+
+function exportCSV() {
+  const headers = ['No. Aset','Nama Aset','Kategori','Lokasi','Status','Tarikh Perolehan','Nilai (RM)','Pembekal','No. Siri','Pengguna','Catatan'];
+  const rows = assets.map(a => [a.id, a.nama, a.kategori, a.lokasi, a.status, a.tarikh, a.nilai, a.pembekal, a.siri, a.pengguna, a.catatan].map(v => `"${(v||'').toString().replace(/"/g,'""')}"`));
+  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  dlBlob(new Blob(['\ufeff'+csv], {type:'text/csv'}), 'rekod_aset_sekolah.csv');
+  showToast('✅ Fail CSV berjaya dimuat turun!');
+}
+
+function exportHTML() {
+  const rows = assets.map(a => `
+    <tr>
+      <td>${a.id}</td><td>${a.nama}</td><td>${a.kategori}</td>
+      <td>${a.lokasi||'-'}</td><td>${a.status}</td><td>${a.tarikh||'-'}</td>
+      <td>RM ${Number(a.nilai||0).toFixed(2)}</td><td>${a.pembekal||'-'}</td>
+      <td>${a.pengguna||'-'}</td>
+    </tr>
+  `).join('');
+  const html = `<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Rekod Aset Sekolah</title>
+  <style>body{font-family:Arial;padding:30px}h1{color:#1a56db;margin-bottom:20px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{background:#1a56db;color:white;padding:10px;text-align:left}
+  td{padding:9px 10px;border-bottom:1px solid #ddd}tr:nth-child(even){background:#f8f8f8}
+  </style></head><body>
+  <h1>🏫 Rekod Aset Sekolah</h1>
+  <p>Tarikh cetak: ${new Date().toLocaleDateString('ms-MY')} | Jumlah: ${assets.length} aset</p>
+  <table><thead><tr><th>No. Aset</th><th>Nama Aset</th><th>Kategori</th><th>Lokasi</th>
+  <th>Status</th><th>Tarikh</th><th>Nilai</th><th>Pembekal</th><th>Pengguna</th></tr></thead>
+  <tbody>${rows}</tbody></table></body></html>`;
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  w.print();
+}
+
+function importJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!Array.isArray(data)) throw new Error();
+      if (confirm(`Import ${data.length} rekod aset? Data sedia ada akan diganti.`)) {
+        assets = data;
+        saveData();
+        refreshDashboard();
+        showToast(`✅ Berjaya import ${data.length} aset!`);
+      }
+    } catch { showToast('❌ Fail JSON tidak sah!', 'error'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function dlBlob(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+}
+
+// ═══════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════
+function statusClass(s) {
+  if (s === 'Baik') return 'baik';
+  if (s === 'Baik Pulih') return 'baik-pulih';
+  if (s === 'Rosak') return 'rosak';
+  return 'lupus';
+}
+
+function getCatIcon(cat) {
+  const m = { 'Perabot':'🪑','Peralatan ICT':'💻','Peralatan Sukan':'⚽','Peralatan Makmal':'🔬',
+    'Buku & Bahan Bacaan':'📚','Kenderaan':'🚐','Peralatan Elektrik':'⚡','Alat Tulis & Pejabat':'✏️' };
+  return m[cat] || '📦';
+}
+
+function showToast(msg, type='success') {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type==='error'?' error':'');
+  el.innerHTML = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+function showGithubInfo() {
+  showView('eksport');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+loadData();
+refreshDashboard();
+renderTable(assets);
+</script>
+</body>
+</html>
