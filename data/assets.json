@@ -1,0 +1,67 @@
+[
+  {
+    "id": "A-2024-001",
+    "nama": "Komputer Riba Dell Latitude",
+    "kategori": "Peralatan ICT",
+    "lokasi": "Bilik Komputer 1",
+    "status": "Baik",
+    "tarikh": "2024-01-15",
+    "nilai": 3200,
+    "pembekal": "ICT Solutions Sdn Bhd",
+    "siri": "SN-DL-00123",
+    "pengguna": "Cik Nurul Ain",
+    "catatan": "Unit dalam keadaan sempurna"
+  },
+  {
+    "id": "A-2024-002",
+    "nama": "Meja Pelajar (Set 30 unit)",
+    "kategori": "Perabot",
+    "lokasi": "Bilik Darjah 4A",
+    "status": "Baik",
+    "tarikh": "2023-08-20",
+    "nilai": 4500,
+    "pembekal": "Perabot Bestari",
+    "siri": "-",
+    "pengguna": "En. Razali",
+    "catatan": ""
+  },
+  {
+    "id": "A-2024-003",
+    "nama": "Projektor Epson EB-W51",
+    "kategori": "Peralatan ICT",
+    "lokasi": "Bilik Tayangan",
+    "status": "Baik Pulih",
+    "tarikh": "2022-03-10",
+    "nilai": 2800,
+    "pembekal": "Tech World Sdn Bhd",
+    "siri": "EP-EB-W51-9921",
+    "pengguna": "Pn. Salmah",
+    "catatan": "Penggantian lampu perlu dilakukan"
+  },
+  {
+    "id": "A-2024-004",
+    "nama": "Bola Jaring (10 biji)",
+    "kategori": "Peralatan Sukan",
+    "lokasi": "Stor Sukan",
+    "status": "Rosak",
+    "tarikh": "2021-06-01",
+    "nilai": 300,
+    "pembekal": "Kedai Sukan Juara",
+    "siri": "-",
+    "pengguna": "En. Fairus",
+    "catatan": "Perlu diganti segera"
+  },
+  {
+    "id": "A-2024-005",
+    "nama": "Kerusi Guru (Kayu Jati)",
+    "kategori": "Perabot",
+    "lokasi": "Bilik Guru",
+    "status": "Baik",
+    "tarikh": "2023-11-05",
+    "nilai": 850,
+    "pembekal": "Perabot Bestari",
+    "siri": "-",
+    "pengguna": "Semua Guru",
+    "catatan": ""
+  }
+]
