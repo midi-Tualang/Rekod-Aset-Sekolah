@@ -1472,6 +1472,94 @@ function showGithubInfo() {
 // ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
+  <script>
+// ═══════════════════════════════════
+//  KAWALAN AKSES - TUKAR DI SINI
+// ═══════════════════════════════════
+const SENARAI_KATALALUAN = [
+  "skkt2024",      // Merdu
+  "guru123",       // Pengguna 2
+  "penolong99",    // Pengguna 3
+  "staf2025",      // Pengguna 4
+  "admin888"       // Admin
+];
+
+// ═══════════════════════════════════
+//  JANGAN UBAH KOD DI BAWAH INI
+// ═══════════════════════════════════
+(function() {
+  const KUNCI = 'skkt_akses_sah';
+  const sudahLog = sessionStorage.getItem(KUNCI);
+  if (sudahLog === 'ya') return;
+
+  document.body.style.display = 'none';
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position:fixed;inset:0;
+    background:linear-gradient(135deg,#1a56db,#1e3a8a);
+    display:flex;align-items:center;justify-content:center;
+    z-index:99999;font-family:'Plus Jakarta Sans',sans-serif;
+  `;
+
+  overlay.innerHTML = `
+    <div style="background:white;border-radius:18px;padding:40px 36px;
+                width:340px;box-shadow:0 24px 80px rgba(0,0,0,0.3);text-align:center">
+      <img src="https://raw.githubusercontent.com/midi-Tualang/Rekod-Aset-Sekolah/main/data/CBA7034.gif"
+           style="width:70px;height:70px;object-fit:contain;margin-bottom:12px">
+      <h2 style="font-size:17px;font-weight:800;color:#0f172a;margin:0 0 4px">
+        SK Kampong Tengah
+      </h2>
+      <p style="font-size:12px;color:#64748b;margin:0 0 24px">
+        Sistem Pengurusan Aset Sekolah
+      </p>
+      <input id="inp-kl" type="password" placeholder="Masukkan Kata Laluan"
+             style="width:100%;padding:11px 14px;border:1.5px solid #dde5f4;
+                    border-radius:9px;font-size:14px;outline:none;
+                    box-sizing:border-box;margin-bottom:10px">
+      <div id="msg-ralat" style="color:#ef4444;font-size:12px;
+                                  margin-bottom:10px;display:none">
+        ⛔ Kata laluan salah. Cuba semula.
+      </div>
+      <button id="btn-masuk"
+              style="width:100%;padding:12px;background:#1a56db;color:white;
+                     border:none;border-radius:9px;font-size:14px;
+                     font-weight:700;cursor:pointer">
+        🔑 Log Masuk
+      </button>
+      <p style="font-size:11px;color:#94a3b8;margin-top:16px">
+        Hubungi Admin untuk mendapatkan akses
+      </p>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  function semakKataLaluan() {
+    const input = document.getElementById('inp-kl').value.trim();
+    const ralat = document.getElementById('msg-ralat');
+    if (SENARAI_KATALALUAN.includes(input)) {
+      sessionStorage.setItem(KUNCI, 'ya');
+      overlay.remove();
+      document.body.style.display = '';
+    } else {
+      ralat.style.display = 'block';
+      document.getElementById('inp-kl').value = '';
+      document.getElementById('inp-kl').focus();
+    }
+  }
+
+  document.getElementById('btn-masuk')
+    .addEventListener('click', semakKataLaluan);
+
+  document.getElementById('inp-kl')
+    .addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') semakKataLaluan();
+    });
+
+  document.body.style.display = '';
+})();
+</script>
 loadData();
 refreshDashboard();
 renderTable(assets);
