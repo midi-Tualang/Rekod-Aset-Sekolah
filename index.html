@@ -1033,24 +1033,10 @@
           <label>Pengguna Bertanggungjawab</label>
           <input type="text" id="f-pengguna" placeholder="cth: En. Ahmad bin Ali">
         </div>
-        <div class="form-group">
-          <label>Pengguna Bertanggungjawab</label>
-          <input type="text" id="f-pengguna" placeholder="cth: En. Ahmad bin Ali">
-        </div>
-        
-        <div class="form-group full" style="background: var(--surface2); padding: 16px; border-radius: 9px; border: 1.5px dashed var(--primary);">
-          <label style="color: var(--primary);">⚡ Pendaftaran Pukal (Senarai Nama Murid)</label>
-          <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:8px; line-height:1.4;">
-            Tampal senarai nama murid di sini (satu nama sebaris). Sistem akan menjana aset berasingan untuk setiap nama. <br>
-            <em>Nota: Jika ruangan ini diisi, No. Aset akan dijana secara automatik secara berturutan (cth: KM-0001, KM-0002).</em>
-          </p>
-          <textarea id="f-pukal-nama" placeholder="Aminudden&#10;Aisyah&#10;Danial..." style="min-height: 100px;"></textarea>
-        </div>
-
-        <div class="form-group full">
-          <label>Catatan / Keterangan</label>
-          <textarea id="f-catatan" placeholder="Tambah sebarang maklumat tambahan di sini..."></textarea>
-        </div>
+        <div class="form-group full">
+          <label>Catatan / Keterangan</label>
+          <textarea id="f-catatan" placeholder="Tambah sebarang maklumat tambahan di sini..."></textarea>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
@@ -1207,9 +1193,6 @@ function renderTable(list) {
         <div class="action-group">
           <button class="btn btn-outline btn-sm" onclick="editAset('${a.id}')">✏️</button>
           <button class="btn btn-danger btn-sm" onclick="deleteAset('${a.id}')">🗑️</button>
-		<button class="btn btn-outline btn-sm" onclick="salinAset('${a.id}')" title="Salin Aset">📄</button>
-		<button class="btn btn-outline btn-sm" onclick="editAset('${a.id}')" title="Edit">✏️</button>
-		<button class="btn btn-danger btn-sm" onclick="deleteAset('${a.id}')" title="Padam">🗑️</button>
         </div>
       </td>
     </tr>
@@ -1267,135 +1250,71 @@ function closeModal(id) {
 }
 
 function resetForm() {
-  ['f-id','f-nama','f-lokasi','f-nilai','f-pembekal','f-siri','f-pengguna','f-catatan','f-tarikh'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('f-kategori').value = '';
-  document.getElementById('f-status').value = '';
-  
-  // TAMBAHAN BARU
-  if(document.getElementById('f-pukal-nama')) document.getElementById('f-pukal-nama').value = ''; 
-  
-  document.getElementById('modal-tambah-title').textContent = '➕ Tambah Aset Baru';
+  ['f-id','f-nama','f-lokasi','f-nilai','f-pembekal','f-siri','f-pengguna','f-catatan','f-tarikh'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-kategori').value = '';
+  document.getElementById('f-status').value = '';
+  document.getElementById('modal-tambah-title').textContent = '➕ Tambah Aset Baru';
 }
 
-function salinAset(id) {
-  const a = assets.find(x => x.id === id);
-  if (!a) return;
-  
-  editingId = null; // Set sebagai pendaftaran baru
-  resetForm(); // Kosongkan form dahulu
-  
-  document.getElementById('modal-tambah-title').textContent = '➕ Salin Aset (Rekod Baru)';
-  document.getElementById('f-id').value = a.id + '-COPY'; // Beri ID sementara
-  document.getElementById('f-nama').value = a.nama;
-  document.getElementById('f-kategori').value = a.kategori;
-  document.getElementById('f-lokasi').value = a.lokasi || '';
-  document.getElementById('f-status').value = a.status;
-  document.getElementById('f-tarikh').value = a.tarikh || '';
-  document.getElementById('f-nilai').value = a.nilai || '';
-  document.getElementById('f-pembekal').value = a.pembekal || '';
-  document.getElementById('f-catatan').value = a.catatan || '';
-  
-  openModal('modal-tambah');
+function editAset(id) {
+  const a = assets.find(x => x.id === id);
+  if (!a) return;
+  editingId = id;
+  document.getElementById('modal-tambah-title').textContent = '✏️ Edit Aset: ' + id;
+  document.getElementById('f-id').value = a.id;
+  document.getElementById('f-nama').value = a.nama;
+  document.getElementById('f-kategori').value = a.kategori;
+  document.getElementById('f-lokasi').value = a.lokasi || '';
+  document.getElementById('f-status').value = a.status;
+  document.getElementById('f-tarikh').value = a.tarikh || '';
+  document.getElementById('f-nilai').value = a.nilai || '';
+  document.getElementById('f-pembekal').value = a.pembekal || '';
+  document.getElementById('f-siri').value = a.siri || '';
+  document.getElementById('f-pengguna').value = a.pengguna || '';
+  document.getElementById('f-catatan').value = a.catatan || '';
+  openModal('modal-tambah');
 }
 
 function saveAset() {
-  const idAsal = document.getElementById('f-id').value.trim();
-  const nama = document.getElementById('f-nama').value.trim();
-  const kategori = document.getElementById('f-kategori').value;
-  const status = document.getElementById('f-status').value;
-  
-  // Nilai dari ruangan Pukal
-  const senaraiPukal = document.getElementById('f-pukal-nama').value.trim();
+  const id = document.getElementById('f-id').value.trim();
+  const nama = document.getElementById('f-nama').value.trim();
+  const kategori = document.getElementById('f-kategori').value;
+  const status = document.getElementById('f-status').value;
 
-  if (!nama || !kategori || !status) {
-    showToast('⚠️ Sila isi semua medan bertanda *', 'error');
-    return;
-  }
+  if (!id || !nama || !kategori || !status) {
+    showToast('⚠️ Sila isi semua medan bertanda *', 'error');
+    return;
+  }
 
-  const lokasi = document.getElementById('f-lokasi').value.trim();
-  const tarikh = document.getElementById('f-tarikh').value;
-  const nilai = parseFloat(document.getElementById('f-nilai').value) || 0;
-  const pembekal = document.getElementById('f-pembekal').value.trim();
-  const siri = document.getElementById('f-siri').value.trim();
-  const catatan = document.getElementById('f-catatan').value.trim();
-  const penggunaTunggal = document.getElementById('f-pengguna').value.trim();
+  if (!editingId && assets.find(a => a.id === id)) {
+    showToast('⚠️ No. Aset "' + id + '" sudah wujud!', 'error');
+    return;
+  }
 
-  // ==========================================
-  // LOGIK PENDAFTARAN PUKAL
-  // ==========================================
-  if (senaraiPukal !== '') {
-    if (!idAsal) {
-      showToast('⚠️ Sila masukkan format No. Aset permulaan (Cth: KM-2026-0001)', 'error');
-      return;
-    }
+  const aset = {
+    id, nama, kategori, status,
+    lokasi: document.getElementById('f-lokasi').value.trim(),
+    tarikh: document.getElementById('f-tarikh').value,
+    nilai: parseFloat(document.getElementById('f-nilai').value) || 0,
+    pembekal: document.getElementById('f-pembekal').value.trim(),
+    siri: document.getElementById('f-siri').value.trim(),
+    pengguna: document.getElementById('f-pengguna').value.trim(),
+    catatan: document.getElementById('f-catatan').value.trim(),
+  };
 
-    const senaraiNama = senaraiPukal.split('\n').map(n => n.trim()).filter(n => n !== '');
-    if (senaraiNama.length === 0) return;
+  if (editingId) {
+    const idx = assets.findIndex(a => a.id === editingId);
+    assets[idx] = aset;
+    showToast('✅ Aset berjaya dikemaskini!');
+  } else {
+    assets.push(aset);
+    showToast('✅ Aset berjaya ditambah!');
+  }
 
-    // Pisahkan format ID (Contoh: "KM-2026-0001" -> prefix: "KM-2026-", number: "0001")
-    let match = idAsal.match(/^(.*?)(\d+)$/);
-    let prefix = match ? match[1] : (idAsal + '-');
-    let startNum = match ? parseInt(match[2], 10) : 1;
-    let padLength = match ? match[2].length : 4;
-
-    let asetBerjaya = 0;
-
-    senaraiNama.forEach((namaMurid) => {
-      let numString = startNum.toString().padStart(padLength, '0');
-      let newId = prefix + numString;
-      
-      // Semak jika ID sudah wujud, langkau ke nombor seterusnya
-      while (assets.find(a => a.id === newId)) {
-         startNum++;
-         numString = startNum.toString().padStart(padLength, '0');
-         newId = prefix + numString;
-      }
-
-      const aset = {
-        id: newId, nama, kategori, status, lokasi, tarikh, nilai, pembekal, siri, catatan,
-        pengguna: namaMurid
-      };
-      
-      assets.push(aset);
-      startNum++; // Naikkan nombor untuk murid seterusnya
-      asetBerjaya++;
-    });
-
-    showToast(`✅ ${asetBerjaya} aset berjaya didaftarkan secara pukal!`);
-
-  } else {
-    // ==========================================
-    // LOGIK PENDAFTARAN TUNGGAL (Asal)
-    // ==========================================
-    if (!idAsal) {
-      showToast('⚠️ Sila masukkan No. Aset', 'error');
-      return;
-    }
-
-    if (!editingId && assets.find(a => a.id === idAsal)) {
-      showToast('⚠️ No. Aset "' + idAsal + '" sudah wujud!', 'error');
-      return;
-    }
-
-    const aset = {
-      id: idAsal, nama, kategori, status, lokasi, tarikh, nilai, pembekal, siri, catatan,
-      pengguna: penggunaTunggal
-    };
-
-    if (editingId) {
-      const idx = assets.findIndex(a => a.id === editingId);
-      assets[idx] = aset;
-      showToast('✅ Aset berjaya dikemaskini!');
-    } else {
-      assets.push(aset);
-      showToast('✅ Aset berjaya ditambah!');
-    }
-  }
-
-  saveData();
-  closeModal('modal-tambah');
-  renderTable(assets);
-  refreshDashboard();
+  saveData();
+  closeModal('modal-tambah');
+  renderTable(assets);
+  refreshDashboard();
 }
 
 function deleteAset(id) {
